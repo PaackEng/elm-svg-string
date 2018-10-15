@@ -1,13 +1,23 @@
 module Svg.String exposing
     ( Attribute
     , Svg
+    , circle
     , defs
+    , feColorMatrix
+    , feGaussianBlur
+    , feOffset
+    , filter
     , g
     , map
     , node
+    , rect
+    , svg
     , text
+    , text_
     , toString
     , toSvg
+    , tspan
+    , use
     )
 
 import Html
@@ -53,6 +63,17 @@ node tag attributes children =
 nodeWithoutChildren : String -> List (Attribute msg) -> List a -> Svg msg
 nodeWithoutChildren tag attrs _ =
     Node tag attrs NoChildren
+
+
+{-| Just put plain text in the DOM. It will escape the string so that it appears
+exactly as you specify.
+
+    text "Hello World!"
+
+-}
+text : String -> Svg msg
+text =
+    TextNode
 
 
 {-| Transform the messages produced by some `Html`. In the following example,
@@ -118,37 +139,97 @@ toString indent =
     Types.toString indent
 
 
-{-| Just put plain text in the DOM. It will escape the string so that it appears
-exactly as you specify.
-
-    text "Hello World!"
-
--}
-text : String -> Svg msg
-text =
-    TextNode
-
-
 
 -- TAGS
 
 
+{-| -}
 svg : List (Html.Attribute msg) -> List (Svg.Svg msg) -> Html.Html msg
 svg =
     Svg.svg
 
 
 
--- GROUPING CONTENT
+-- Container elements
 
 
+{-| -}
+defs : List (Attribute msg) -> List (Svg msg) -> Svg msg
+defs =
+    node "defs"
+
+
+{-| -}
 g : List (Attribute msg) -> List (Svg msg) -> Svg msg
 g =
     node "g"
 
 
-{-| Defines a portion that should be displayed as a paragraph.
--}
-defs : List (Attribute msg) -> List (Svg msg) -> Svg msg
-defs =
-    node "defs"
+
+-- Filter primitive elements
+
+
+{-| -}
+feColorMatrix : List (Attribute msg) -> List (Svg msg) -> Svg msg
+feColorMatrix =
+    node "feColorMatrix"
+
+
+{-| -}
+feGaussianBlur : List (Attribute msg) -> List (Svg msg) -> Svg msg
+feGaussianBlur =
+    node "feGaussianBlur"
+
+
+{-| -}
+feOffset : List (Attribute msg) -> List (Svg msg) -> Svg msg
+feOffset =
+    node "feOffset"
+
+
+
+-- Graphics elements
+
+
+{-| -}
+circle : List (Attribute msg) -> List (Svg msg) -> Svg msg
+circle =
+    node "circle"
+
+
+{-| -}
+rect : List (Attribute msg) -> List (Svg msg) -> Svg msg
+rect =
+    node "rect"
+
+
+{-| -}
+use : List (Attribute msg) -> List (Svg msg) -> Svg msg
+use =
+    node "use"
+
+
+
+-- Text content elements
+
+
+{-| -}
+text_ : List (Attribute msg) -> List (Svg msg) -> Svg msg
+text_ =
+    node "text"
+
+
+{-| -}
+tspan : List (Attribute msg) -> List (Svg msg) -> Svg msg
+tspan =
+    node "tspan"
+
+
+
+-- Uncategorized elements
+
+
+{-| -}
+filter : List (Attribute msg) -> List (Svg msg) -> Svg msg
+filter =
+    node "filter"

@@ -28,5 +28,5 @@ nodes, removing nodes, etc. In these cases, the unique identifiers help make
 the DOM modifications more efficient.
 -}
 node : String -> List (Attribute msg) -> List ( String, Svg msg ) -> Svg msg
-node =
-    VirtualDom.keyedNodeNS "http://www.w3.org/2000/svg"
+node tag attrs children =
+    Svg.Types.Node tag attrs (Svg.Types.Keyed children)

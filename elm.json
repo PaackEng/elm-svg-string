@@ -1,12 +1,18 @@
 {
     "type": "package",
-    "name": "elm-svg-string",
+    "name": "PaackEng/elm-svg-string",
     "summary": "Serializes a SVG node into a string",
     "license": "BSD-3-Clause",
     "version": "0.0.1",
     "exposed-modules": {
         "SVG": [
-            "Svg"
+            "Svg",
+            "Svg.Attributes",
+            "Svg.Events"
+        ],
+        "Optimize": [
+            "Svg.Keyed",
+            "Svg.Lazy"
         ]
     },
     "elm-version": "0.19.0 <= v < 0.20.0",
@@ -17,5 +23,7 @@
         "elm/svg": "1.0.1 <= v < 2.0.0",
         "elm/virtual-dom": "1.0.0 <= v < 2.0.0"
     },
-    "test-dependencies": {}
+    "test-dependencies": {
+        "elm-explorations/test": "1.1.0 <= v < 2.0.0"
+    }
 }

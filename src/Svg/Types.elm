@@ -23,13 +23,13 @@ module Svg.Types exposing
     )
 
 import Char
-import Elm.Kernel.VirtualDom
 import Json.Decode exposing (Decoder, Value)
 import Json.Encode as Encode
 import Svg
 import Svg.Attributes
 import Svg.Events
 import Svg.Keyed
+import VirtualDom
 
 
 type Children msg
@@ -107,7 +107,7 @@ attributeToSvg : Attribute msg -> Svg.Attribute msg
 attributeToSvg attribute =
     case attribute of
         Attribute key value ->
-            Elm.Kernel.VirtualDom.attribute key value
+            VirtualDom.attribute key value
 
         Style style ->
             Svg.Attributes.style style
