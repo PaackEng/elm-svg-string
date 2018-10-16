@@ -1,7 +1,6 @@
 module Tests exposing (suite)
 
-import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, int, list, string)
+import Expect
 import Svg.String as Svg exposing (..)
 import Svg.String.Attributes as Attr exposing (..)
 import Svg.String.Events as Events
