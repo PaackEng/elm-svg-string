@@ -1,5 +1,6 @@
 module Svg.String exposing
     ( Attribute
+    , Html
     , Svg
     , circle
     , defs
@@ -34,6 +35,10 @@ need to know any details about that to use this library!
 -}
 type alias Svg msg =
     Types.Svg msg
+
+
+type alias Html msg =
+    Types.Html msg
 
 
 {-| Set attributes on your `Svg`.
