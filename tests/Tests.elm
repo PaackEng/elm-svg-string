@@ -8,116 +8,71 @@ import Svg.String.Events as Events
 import Test exposing (..)
 
 
-testSvgIcon pinColor num =
-    let
-        xText =
-            if num > 9 then
-                text_
-                    [ fill "#0E1520", fontFamily "Helvetica", fontSize "24", fontWeight "normal", id "2" ]
-                    [ tspan
-                        [ x "7", y "29" ]
-                        [ text (String.fromInt num) ]
-                    ]
-
-            else
-                text_
-                    [ fill "#0E1520", fontFamily "Helvetica", fontSize "24", fontWeight "normal", id "2" ]
-                    [ tspan
-                        [ x "13", y "29" ]
-                        [ text (String.fromInt num) ]
-                    ]
-
-        svgBody =
-            -- [
-            defs []
-                [ circle
-                    [ cx "20", cy "20", id "path-1", r "20" ]
-                    []
-                , Svg.filter
-                    [ filterUnits "objectBoundingBox", height "135.0%", id "filter-2", width "135.0%", x "-17.5%", y "-12.5%" ]
-                    [ feOffset
-                        [ dx "0", dy "2", in_ "SourceAlpha", result "shadowOffsetOuter1" ]
-                        []
-                    , feGaussianBlur
-                        [ in_ "shadowOffsetOuter1", result "shadowBlurOuter1", stdDeviation "2" ]
-                        []
-                    , feColorMatrix
-                        [ in_ "shadowBlurOuter1", type_ "matrix", values "0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" ]
-                        []
-                    ]
-                ]
-
-        -- , g [ fill "none", fillRule "evenodd", id "Routing-2", stroke "none", strokeWidth "1" ]
-        --     [ g [ id "Route-Creation-Drag", transform "translate(-954.000000, -442.000000)" ]
-        --         [ g [ id "Group-23", transform "translate(958.000000, 444.000000)" ]
-        --             [ g [ id "draft-customer-pin" ]
-        --                 [ g [ id "Group-8" ]
-        --                     [ rect
-        --                         [ fill "#E5E5E5", height "33", id "Rectangle-2", rx "2.5", width "5", x "18", y "33" ]
-        --                         []
-        --                     , g [ id "Oval-5" ]
-        --                         [ use
-        --                             [ fill "black", fillOpacity "1", Attr.filter "url(#filter-2)", xlinkHref "#path-1" ]
-        --                             []
-        --                         , use
-        --                             [ fill pinColor, fillRule "evenodd", xlinkHref "#path-1" ]
-        --                             []
-        --                         ]
-        --                     ]
-        --                 ]
-        --             , xText
-        --             ]
-        --         ]
-        --     ]
-        -- ]
-        -- icon =
-        --     svg [ height "68px", attribute "version" "1.1", viewBox "0 0 48 68", width "48px", attribute "xmlns" "http://www.w3.org/2000/svg", attribute "xmlns:xlink" "http://www.w3.org/1999/xlink" ]
-        --         svgBody
-    in
-    "data:image/svg+xml;utf-8, " ++ Svg.toString 0 svgBody
-
-
 suite : Test
 suite =
     describe "Simple cases"
-        [ test "Svg.test" <|
+        [ test "empty tag" <|
             \_ ->
-                Svg.text "hello!"
+                svg [] []
                     |> Svg.toString 0
-                    |> Expect.equal "hello!"
-        , test "Svg.g" <|
+                    |> Expect.equal "<svg></svg>"
+        , test "text node" <|
             \_ ->
-                Svg.g [] [ Svg.text "groupped" ]
+                svg [] [ Svg.text "hello!" ]
                     |> Svg.toString 0
-                    |> Expect.equal "<g>groupped</g>"
-        , test "nested" <|
+                    |> Expect.equal "<svg>hello!</svg>"
+        , test "group tag" <|
             \_ ->
-                Svg.defs []
-                    [ Svg.g []
-                        [ Svg.rect []
-                            [ Svg.text "inner" ]
+                svg []
+                    [ Svg.g [] [ Svg.text "groupped" ]
+                    ]
+                    |> Svg.toString 0
+                    |> Expect.equal "<svg><g>groupped</g></svg>"
+        , test "nested nodes" <|
+            \_ ->
+                svg []
+                    [ Svg.defs []
+                        [ Svg.g []
+                            [ Svg.rect []
+                                [ Svg.text "inner" ]
+                            ]
                         ]
                     ]
                     |> Svg.toString 0
-                    |> Expect.equal "<defs><g><rect>inner</rect></g></defs>"
+                    |> Expect.equal "<svg><defs><g><rect>inner</rect></g></defs></svg>"
         , test "setting indent adds newlines and adds indentation" <|
             \_ ->
-                Svg.defs [] [ Svg.text "Hello world!" ]
+                svg []
+                    [ Svg.defs [] [ Svg.text "Hello world!" ]
+                    ]
                     |> Svg.toString 2
-                    |> Expect.equal "<defs>\n  Hello world!\n</defs>"
+                    |> Expect.equal "<svg>\n  <defs>\n    Hello world!\n  </defs>\n</svg>"
         , test "if there are eventshandler attached, remove them from the markup" <|
             \_ ->
-                Svg.rect [ Events.onClick 0 ] []
+                svg []
+                    [ Svg.rect [ Events.onClick 0 ] []
+                    ]
                     |> Svg.toString 0
-                    |> Expect.equal "<rect></rect>"
+                    |> Expect.equal "<svg><rect></rect></svg>"
         , test "attributes are rendered as key-value pairs" <|
             \_ ->
-                Svg.rect [ Attr.x "100", Attr.y "200", Attr.stroke "red" ] []
+                svg []
+                    [ Svg.rect [ Attr.x "100", Attr.y "200", Attr.stroke "red" ] []
+                    ]
                     |> Svg.toString 0
-                    |> Expect.equal "<rect x=\"100\" y=\"200\" stroke=\"red\"></rect>"
-        , test "styles are serialized to proper css. Sorta." <|
+                    |> Expect.equal "<svg><rect x=\"100\" y=\"200\" stroke=\"red\"></rect></svg>"
+        , test "styles are serialized to proper css" <|
             \_ ->
-                Svg.rect [ Attr.style "fill: red", Attr.style "stroke: blue" ] []
+                svg []
+                    [ Svg.rect [ Attr.style "fill: red", Attr.style "stroke: blue" ] []
+                    ]
                     |> Svg.toString 0
-                    |> Expect.equal "<rect style=\"fill: red\" style=\"stroke: blue\"></rect>"
+                    |> Expect.equal "<svg><rect style=\"fill: red\" style=\"stroke: blue\"></rect></svg>"
+        , test "attributes in svg tag are correctly serialized" <|
+            \_ ->
+                svg [ height "68px", attribute "version" "1.1", viewBox "0 0 48 68" ]
+                    [ Svg.rect [ Attr.style "fill: red", Attr.style "stroke: blue" ] []
+                    ]
+                    |> Svg.toString 0
+                    |> Expect.equal "<svg height=\"68px\" version=\"1.1\" view-box=\"0 0 48 68\"><rect style=\"fill: red\" style=\"stroke: blue\"></rect></svg>"
         ]

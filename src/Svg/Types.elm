@@ -2,6 +2,7 @@ module Svg.Types exposing
     ( Acc
     , Attribute(..)
     , Children(..)
+    , Html(..)
     , Indenter
     , Svg(..)
     , TagInfo
@@ -17,14 +18,13 @@ module Svg.Types exposing
     , mapAttribute
     , mapChildren
     , tag
+    , toHtml
     , toString
-    , toStringHelper
-    , toSvg
     )
 
 import Char
-import Json.Decode exposing (Decoder, Value)
-import Json.Encode as Encode
+import Html
+import Json.Decode exposing (Decoder)
 import Svg
 import Svg.Attributes
 import Svg.Events
@@ -56,6 +56,10 @@ type Svg msg
     | TextNode String
 
 
+type Html msg
+    = HtmlNode String (List (Attribute msg)) (List (Svg msg))
+
+
 map : (a -> b) -> Svg a -> Svg b
 map f node =
     case node of
@@ -85,8 +89,13 @@ mapAttribute f attribute =
             Event name (Json.Decode.map f msgDecoder)
 
 
-toSvg : Svg msg -> Svg.Svg msg
-toSvg node =
+toHtml : Html msg -> Html.Html msg
+toHtml (HtmlNode tagName attributes children) =
+    Html.node "svg" (List.map attributeToSvg attributes) (List.map svgToSvg children)
+
+
+svgToSvg : Svg msg -> Svg.Svg msg
+svgToSvg node =
     case node of
         Node tagName attributes children ->
             case children of
@@ -94,10 +103,10 @@ toSvg node =
                     Svg.node tagName (List.map attributeToSvg attributes) []
 
                 Regular nodes ->
-                    Svg.node tagName (List.map attributeToSvg attributes) (List.map toSvg nodes)
+                    Svg.node tagName (List.map attributeToSvg attributes) (List.map svgToSvg nodes)
 
                 Keyed keyedNodes ->
-                    Svg.Keyed.node tagName (List.map attributeToSvg attributes) (List.map (Tuple.mapSecond toSvg) keyedNodes)
+                    Svg.Keyed.node tagName (List.map attributeToSvg attributes) (List.map (Tuple.mapSecond svgToSvg) keyedNodes)
 
         TextNode content ->
             Svg.text content
@@ -116,8 +125,8 @@ attributeToSvg attribute =
             Svg.Events.on name decoder
 
 
-toString : Int -> Svg msg -> String
-toString depth svg =
+toString : Int -> Html msg -> String
+toString depth html =
     let
         indenter : Indenter
         indenter =
@@ -144,7 +153,7 @@ toString depth svg =
             , result = []
             }
     in
-    toStringHelper indenter [ svg ] initialAcc
+    htmlToStringHelper indenter html initialAcc
         |> .result
         |> join joinString
 
@@ -177,8 +186,18 @@ type alias TagInfo msg =
     ( String, List (Svg msg) )
 
 
-toStringHelper : Indenter -> List (Svg msg) -> Acc msg -> Acc msg
-toStringHelper indenter tags acc =
+htmlToStringHelper : Indenter -> Html msg -> Acc msg -> Acc msg
+htmlToStringHelper indenter (HtmlNode tagName attributes children) acc =
+    { acc
+        | result = indenter acc.depth (tag tagName attributes) :: acc.result
+        , depth = acc.depth + 1
+        , stack = ( tagName, [] ) :: acc.stack
+    }
+        |> svgToStringHelper indenter children
+
+
+svgToStringHelper : Indenter -> List (Svg msg) -> Acc msg -> Acc msg
+svgToStringHelper indenter tags acc =
     case tags of
         [] ->
             case acc.stack of
@@ -191,13 +210,13 @@ toStringHelper indenter tags acc =
                         , depth = acc.depth - 1
                         , stack = rest
                     }
-                        |> toStringHelper indenter cont
+                        |> svgToStringHelper indenter cont
 
         (Node tagName attributes children) :: rest ->
             case children of
                 NoChildren ->
                     { acc | result = indenter acc.depth (tag tagName attributes) :: acc.result }
-                        |> toStringHelper indenter rest
+                        |> svgToStringHelper indenter rest
 
                 Regular childNodes ->
                     { acc
@@ -205,7 +224,7 @@ toStringHelper indenter tags acc =
                         , depth = acc.depth + 1
                         , stack = ( tagName, rest ) :: acc.stack
                     }
-                        |> toStringHelper indenter childNodes
+                        |> svgToStringHelper indenter childNodes
 
                 Keyed childNodes ->
                     { acc
@@ -213,11 +232,11 @@ toStringHelper indenter tags acc =
                         , depth = acc.depth + 1
                         , stack = ( tagName, rest ) :: acc.stack
                     }
-                        |> toStringHelper indenter (List.map Tuple.second childNodes)
+                        |> svgToStringHelper indenter (List.map Tuple.second childNodes)
 
         (TextNode string) :: rest ->
             { acc | result = indenter acc.depth string :: acc.result }
-                |> toStringHelper indenter rest
+                |> svgToStringHelper indenter rest
 
 
 tag : String -> List (Attribute msg) -> String

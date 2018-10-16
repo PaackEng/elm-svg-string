@@ -14,8 +14,8 @@ module Svg.String exposing
     , svg
     , text
     , text_
+    , toHtml
     , toString
-    , toSvg
     , tspan
     , use
     )
@@ -25,34 +25,31 @@ import Svg
 import Svg.Types as Types exposing (..)
 
 
-{-| The core building block used to build up HTML. Here we create an `Html`
-value with no attributes and one child:
+{-| The core building block to create SVG. This library is filled with helper
+functions to create these `Svg` values.
 
-    hello : Html msg
-    hello =
-        div [] [ text "Hello!" ]
+This is backed by `VirtualDom.Node` in `evancz/virtual-dom`, but you do not
+need to know any details about that to use this library!
 
 -}
 type alias Svg msg =
     Types.Svg msg
 
 
-{-| Set attributes on your `Html`. Learn more in the
-[`Html.String.Attributes`](Html.String.Attributes) module.
+{-| Set attributes on your `Svg`.
 -}
 type alias Attribute msg =
     Types.Attribute msg
 
 
-{-| General way to create HTML nodes. It is used to define all of the helper
-functions in this library.
+{-| Create any SVG node. To create a `<rect>` helper function, you would write:
 
-    div : List (Attribute msg) -> List (Html msg) -> Html msg
-    div attributes children =
-        node "div" attributes children
+    rect : List (Attribute msg) -> List (Svg msg) -> Svg msg
+    rect attributes children =
+        node "rect" attributes children
 
-You can use this to create custom nodes if you need to create something that
-is not covered by the helper functions in this library.
+You should always be able to use the helper functions already defined in this
+library though!
 
 -}
 node : String -> List (Attribute msg) -> List (Svg msg) -> Svg msg
@@ -60,15 +57,19 @@ node tag attributes children =
     Node tag attributes (Regular children)
 
 
+htmlNode : String -> List (Attribute msg) -> List (Svg msg) -> Html msg
+htmlNode tag attributes children =
+    HtmlNode tag attributes children
+
+
 nodeWithoutChildren : String -> List (Attribute msg) -> List a -> Svg msg
 nodeWithoutChildren tag attrs _ =
     Node tag attrs NoChildren
 
 
-{-| Just put plain text in the DOM. It will escape the string so that it appears
-exactly as you specify.
+{-| A simple text node, no tags at all.
 
-    text "Hello World!"
+Warning: not to be confused with `text_` which produces the SVG `<text>` tag!
 
 -}
 text : String -> Svg msg
@@ -76,41 +77,18 @@ text =
     TextNode
 
 
-{-| Transform the messages produced by some `Html`. In the following example,
-we have `viewButton` that produces `()` messages, and we transform those values
-into `Msg` values in `view`.
-
-    type Msg
-        = Left
-        | Right
-
-    view : model -> Html Msg
-    view model =
-        div []
-            [ map (\_ -> Left) (viewButton "Left")
-            , map (\_ -> Right) (viewButton "Right")
-            ]
-
-    viewButton : String -> Html ()
-    viewButton name =
-        button [ onClick () ] [ text name ]
-
-This should not come in handy too often. Definitely read [this][reuse] before
-deciding if this is what you want.
-
-[reuse]: https://guide.elm-lang.org/reuse/
-
+{-| Transform the messages produced by some `Svg`.
 -}
 map : (a -> b) -> Svg a -> Svg b
 map =
     Types.map
 
 
-{-| Convert to regular `elm/svg` Svg.
+{-| Convert to regular `elm/html` Html.
 -}
-toSvg : Svg msg -> Svg.Svg msg
-toSvg =
-    Types.toSvg
+toHtml : Html msg -> Html.Html msg
+toHtml =
+    Types.toHtml
 
 
 {-| Convert to a string with indentation.
@@ -118,23 +96,22 @@ toSvg =
 Setting indentation to 0 will additionally remove newlines between tags, sort of
 like `Json.Encode.encode 0`.
 
-    import Html.String.Attributes exposing (href)
+    import Svg.String.Attributes exposing (g, rect, stroke)
 
 
     someHtml : Html msg
     someHtml =
-        a [ href "http://google.com" ] [ text "Google!" ]
+        svg [ height "68px" ] [ g [] [ rect [ x "10", y "20", stroke "red" ]]]
 
 
-    Html.String.toString 2 someHtml
-    --> "<a href=\"http://google.com\">\n  Google!\n</a>"
+    Svg.String.toString 2 someHtml
+    -->"<svg height=\"68px\">\n  <g>\n    <rect x=\"10\" y=\"20\" stroke=\"red\">\n    </rect>\n  </g>\n</svg>"
 
-
-    Html.String.toString 0 someHtml
-    --> "<a href=\"http://google.com\">Google!</a>"
+    Svg.String.toString 0 someHtml
+    --> "<svg height=\"68px\"><g><rect x=\"10\" y=\"20\" stroke=\"red\"></rect></g></svg>"
 
 -}
-toString : Int -> Svg msg -> String
+toString : Int -> Html msg -> String
 toString indent =
     Types.toString indent
 
@@ -144,9 +121,9 @@ toString indent =
 
 
 {-| -}
-svg : List (Html.Attribute msg) -> List (Svg.Svg msg) -> Html.Html msg
+svg : List (Attribute msg) -> List (Svg msg) -> Html msg
 svg =
-    Svg.svg
+    htmlNode "svg"
 
 
 

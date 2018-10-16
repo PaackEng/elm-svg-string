@@ -39,20 +39,20 @@ import Svg.String exposing (Attribute)
 import Svg.Types
 
 
-
--- REGULAR ATTRIBUTES
-
-
-attribute : String -> String -> Attribute msg
-attribute =
-    Svg.Types.Attribute
-
-
 {-| Transform the messages produced by an `Attribute`.
 -}
 map : (a -> msg) -> Attribute a -> Attribute msg
 map =
     Svg.Types.mapAttribute
+
+
+
+-- ATTRIBUTES
+
+
+attribute : String -> String -> Attribute msg
+attribute =
+    Svg.Types.Attribute
 
 
 {-| -}
