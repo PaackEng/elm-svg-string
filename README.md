@@ -22,8 +22,8 @@ import Svg.String.Attributes as Attr
 import Svg.String.Events as Events
 
 
-someSvg : Int -> Html Msg
-someSvg count =
+someSvg : Html Msg
+someSvg =
     Svg.svg [ height "68px", attribute "version" "1.1", viewBox "0 0 48 68" ]
         [ Svg.rect [ Attr.style "fill: red", Attr.style "stroke: blue" ] []
         ]
