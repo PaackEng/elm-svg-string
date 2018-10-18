@@ -1,25 +1,28 @@
 module Svg.String exposing
-    ( Attribute
-    , Html
-    , Svg
-    , circle
-    , defs
-    , feColorMatrix
-    , feGaussianBlur
-    , feOffset
-    , filter
-    , g
-    , map
-    , node
-    , rect
-    , svg
-    , text
-    , text_
-    , toHtml
-    , toString
-    , tspan
-    , use
+    ( toHtml, toString
+    , Svg, Html, Attribute, text, node, map
+    , circle, defs, feColorMatrix, feGaussianBlur, feOffset, filter, g, rect, svg, text_, tspan, use
     )
+
+{-| This file is organized roughly in order of popularity. The tags which you'd
+expect to use frequently will be closer to the top.
+
+
+# Serialization
+
+@docs toHtml, toString
+
+
+# Primitives
+
+@docs Svg, Html, Attribute, text, node, map
+
+
+# Tags
+
+@docs circle, defs, feColorMatrix, feGaussianBlur, feOffset, filter, g, rect, svg, text_, tspan, use
+
+-}
 
 import Html
 import Svg
@@ -37,6 +40,8 @@ type alias Svg msg =
     Types.Svg msg
 
 
+{-| The core building block used to build up HTML.
+-}
 type alias Html msg =
     Types.Html msg
 

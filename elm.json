@@ -4,17 +4,13 @@
     "summary": "Serializes a SVG node into a string",
     "license": "BSD-3-Clause",
     "version": "1.0.0",
-    "exposed-modules": {
-        "SVG": [
-            "Svg",
-            "Svg.Attributes",
-            "Svg.Events"
-        ],
-        "Optimize": [
-            "Svg.Keyed",
-            "Svg.Lazy"
-        ]
-    },
+    "exposed-modules": [
+        "Svg.String",
+        "Svg.String.Attributes",
+        "Svg.String.Keyed",
+        "Svg.String.Lazy",
+        "Svg.String.Events"
+    ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {
         "elm/core": "1.0.0 <= v < 2.0.0",
