@@ -1,38 +1,19 @@
 module Svg.String.Attributes exposing
-    ( attribute
-    , cx
-    , cy
-    , dx
-    , dy
-    , fill
-    , fillOpacity
-    , fillRule
-    , filter
-    , filterUnits
-    , fontFamily
-    , fontSize
-    , fontWeight
-    , height
-    , id
-    , in_
-    , map
-    , r
-    , result
-    , rx
-    , ry
-    , stdDeviation
-    , stroke
-    , strokeWidth
-    , style
-    , transform
-    , type_
-    , values
-    , viewBox
-    , width
-    , x
-    , xlinkHref
-    , y
+    ( attribute, cx, cy, dx, dy, fill, fillOpacity, fillRule, filter, filterUnits, fontFamily, fontSize
+    , fontWeight, height, id, in_, map, r, result, rx, ry, stdDeviation, stroke, strokeWidth, style, transform
+    , type_, values, viewBox, width, x, xlinkHref, y
     )
+
+{-| Helper functions for SVG attributes.
+
+
+# Regular attributes
+
+@docs attribute, cx, cy, dx, dy, fill, fillOpacity, fillRule, filter, filterUnits, fontFamily, fontSize
+@docs fontWeight, height, id, in_, map, r, result, rx, ry, stdDeviation, stroke, strokeWidth, style, transform
+@docs type_, values, viewBox, width, x, xlinkHref, y
+
+-}
 
 import Json.Encode as Json
 import Svg.String exposing (Attribute)
@@ -50,6 +31,7 @@ map =
 -- ATTRIBUTES
 
 
+{-| -}
 attribute : String -> String -> Attribute msg
 attribute =
     Svg.Types.Attribute

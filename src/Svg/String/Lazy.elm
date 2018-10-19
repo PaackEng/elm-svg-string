@@ -17,6 +17,15 @@ import Svg exposing (Svg)
 import VirtualDom
 
 
+{-| A performance optimization that delays the building of virtual DOM nodes.
+
+Calling `(view model)` will definitely build some virtual DOM, perhaps a lot of
+it. Calling `(lazy view model)` delays the call until later. During diffing, we
+can check to see if `model` is referentially equal to the previous value used,
+and if so, we just stop. No need to build up the tree structure and diff it,
+we know if the input to `view` is the same, the output must be the same!
+
+-}
 lazy : (a -> Svg msg) -> a -> Svg msg
 lazy fn a =
     fn a

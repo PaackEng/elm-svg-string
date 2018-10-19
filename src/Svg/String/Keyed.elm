@@ -17,9 +17,8 @@ removed, etc. Common examples include:
 
 -}
 
-import Json.Encode as Json
-import Svg exposing (Attribute, Svg)
-import VirtualDom
+import Svg.String exposing (Attribute, Svg)
+import Svg.Types
 
 
 {-| Works just like `Svg.node`, but you add a unique identifier to each child
