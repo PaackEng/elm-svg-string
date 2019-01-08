@@ -246,7 +246,7 @@ tag tagName attributes =
 
 buildProp : String -> String -> String
 buildProp key value =
-    hyphenate key ++ "=\"" ++ escape value ++ "\""
+    hyphenate key ++ "='" ++ escape value ++ "'"
 
 
 attributeToString : Attribute msg -> Maybe String
@@ -256,7 +256,7 @@ attributeToString attribute =
             Just <| buildProp key value
 
         Style style ->
-            Just <| "style=\"" ++ style ++ "\""
+            Just <| "style='" ++ style ++ "'"
 
         Event string msgDecoder ->
             Nothing
@@ -266,8 +266,8 @@ escape : String -> String
 escape =
     String.foldl
         (\char acc ->
-            if char == '"' then
-                acc ++ "\\\""
+            if char == '\'' then
+                acc ++ "&apos;"
 
             else
                 acc ++ String.fromChar char

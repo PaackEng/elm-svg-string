@@ -59,19 +59,19 @@ suite =
                     [ Svg.rect [ Attr.x "100", Attr.y "200", Attr.stroke "red" ] []
                     ]
                     |> Svg.toString 0
-                    |> Expect.equal "<svg><rect x=\"100\" y=\"200\" stroke=\"red\"></rect></svg>"
+                    |> Expect.equal "<svg><rect x='100' y='200' stroke='red'></rect></svg>"
         , test "styles are serialized to proper css" <|
             \_ ->
                 svg []
                     [ Svg.rect [ Attr.style "fill: red", Attr.style "stroke: blue" ] []
                     ]
                     |> Svg.toString 0
-                    |> Expect.equal "<svg><rect style=\"fill: red\" style=\"stroke: blue\"></rect></svg>"
+                    |> Expect.equal "<svg><rect style='fill: red' style='stroke: blue'></rect></svg>"
         , test "attributes in svg tag are correctly serialized" <|
             \_ ->
                 svg [ height "68px", attribute "version" "1.1", viewBox "0 0 48 68" ]
                     [ Svg.rect [ Attr.style "fill: red", Attr.style "stroke: blue" ] []
                     ]
                     |> Svg.toString 0
-                    |> Expect.equal "<svg height=\"68px\" version=\"1.1\" view-box=\"0 0 48 68\"><rect style=\"fill: red\" style=\"stroke: blue\"></rect></svg>"
+                    |> Expect.equal "<svg height='68px' version='1.1' view-box='0 0 48 68'><rect style='fill: red' style='stroke: blue'></rect></svg>"
         ]
