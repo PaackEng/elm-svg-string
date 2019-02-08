@@ -91,7 +91,7 @@ mapAttribute f attribute =
 
 toHtml : Html msg -> Html.Html msg
 toHtml (HtmlNode tagName attributes children) =
-    Html.node "svg" (List.map attributeToSvg attributes) (List.map svgToSvg children)
+    Svg.svg (List.map attributeToSvg attributes) (List.map svgToSvg children)
 
 
 svgToSvg : Svg msg -> Svg.Svg msg
