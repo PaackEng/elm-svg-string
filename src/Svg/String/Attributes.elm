@@ -216,8 +216,59 @@ x : String -> Attribute msg
 x value =
     attribute "x" value
 
-
 {-| -}
 y : String -> Attribute msg
 y value =
     attribute "y" value
+
+-- SVG Root Node Attributes
+
+{-| -}
+shapeRendering : String -> Attribute msg
+shapeRendering = attribute "shapeRendering"
+
+{-| -}
+visibility : String -> Attribute msg
+visibility = attribute "visibility"
+
+{-| -}
+version : String -> Attribute msg
+version = attribute "version"
+
+{-| -}
+xmlns : String -> Attribute msg
+xmlns = attribute "xmlns"
+
+-- Animation Attributes
+
+{-| -}
+attributeName : String -> Attribute msg
+attributeName = attribute "attributeName"
+
+{-| -}
+attributeType : String -> Attribute msg
+attributeType = attribute "attributeType"
+
+{-| -}
+begin : String -> Attribute msg
+begin = attribute "begin"
+
+{-| -}
+end : String -> Attribute msg
+end = attribute "end"
+
+{-| -}
+dur : String -> Attribute msg
+dur = attribute "dur"
+
+{-| -}
+from : String -> Attribute msg
+from = attribute "from"
+
+{-| -}
+to : String -> Attribute msg
+to = attribute "to"
+
+{-| -}
+repeatCount : String -> Attribute msg
+repeatCount = attribute "repeatCount"

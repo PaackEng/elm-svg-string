@@ -212,6 +212,19 @@ tspan =
     node "tspan"
 
 
+-- Animation elements
+
+{-| -}
+animate : List (Attribute msg) -> List (Svg msg) -> Svg msg
+animate = node "animate"
+
+{-| -}
+animateTransform : List (Attribute msg) -> List (Svg msg) -> Svg msg
+animateTransform = node "animateTransform"
+
+{-| -}
+animateColor : List (Attribute msg) -> List (Svg msg) -> Svg msg
+animateColor = node "animateColor"
 
 -- Uncategorized elements
 
