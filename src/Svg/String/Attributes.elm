@@ -2,6 +2,9 @@ module Svg.String.Attributes exposing
     ( attribute, cx, cy, dx, dy, fill, fillOpacity, fillRule, filter, filterUnits, fontFamily, fontSize
     , fontWeight, height, id, in_, map, r, result, rx, ry, stdDeviation, stroke, strokeWidth, style, transform
     , type_, values, viewBox, width, x, xlinkHref, y
+    , class, points, d, strokeDasharray, cursor, preserveAspectRatio
+    , x1, x2, y1, y2, shapeRendering, visibility, version, xmlns
+    , attributeName, attributeType, begin, end, dur, from, to, repeatCount
     )
 
 {-| Helper functions for SVG attributes.
@@ -120,11 +123,28 @@ id : String -> Attribute msg
 id name =
     attribute "id" name
 
+{-| -}
+class : String -> Attribute msg
+class name =
+    attribute "class" name
+
 
 {-| -}
 in_ : String -> Attribute msg
 in_ name =
     attribute "in" name
+
+
+{-| -}
+points : String -> Attribute msg
+points value =
+    attribute "points" value
+
+
+{-| -}
+d : String -> Attribute msg
+d value =
+    attribute "d" value
 
 
 {-| -}
@@ -170,9 +190,20 @@ strokeWidth value =
 
 
 {-| -}
+strokeDasharray : String -> Attribute msg
+strokeDasharray value =
+    attribute "stroke-dasharray" value
+
+
+{-| -}
 style : String -> Attribute msg
 style =
     Svg.Types.Style
+
+{-| -}
+cursor  : String -> Attribute msg
+cursor value =
+    attribute "cursor" value
 
 
 {-| -}
@@ -192,6 +223,10 @@ viewBox : String -> Attribute msg
 viewBox name =
     attribute "viewBox" name
 
+{-| -}
+preserveAspectRatio : String -> Attribute msg
+preserveAspectRatio name =
+    attribute "preserveAspectRatio" name
 
 {-| -}
 values : String -> Attribute msg
@@ -216,8 +251,79 @@ x : String -> Attribute msg
 x value =
     attribute "x" value
 
+{-| -}
+x1 : String -> Attribute msg
+x1 value =
+    attribute "x1" value
+
+{-| -}
+x2 : String -> Attribute msg
+x2 value =
+    attribute "x2" value
 
 {-| -}
 y : String -> Attribute msg
 y value =
     attribute "y" value
+
+{-| -}
+y1 : String -> Attribute msg
+y1 value =
+    attribute "y1" value
+
+{-| -}
+y2 : String -> Attribute msg
+y2 value =
+    attribute "y2" value
+
+-- SVG Root Node Attributes
+
+{-| -}
+shapeRendering : String -> Attribute msg
+shapeRendering = attribute "shapeRendering"
+
+{-| -}
+visibility : String -> Attribute msg
+visibility = attribute "visibility"
+
+{-| -}
+version : String -> Attribute msg
+version = attribute "version"
+
+{-| -}
+xmlns : String -> Attribute msg
+xmlns = attribute "xmlns"
+
+-- Animation Attributes
+
+{-| -}
+attributeName : String -> Attribute msg
+attributeName = attribute "attributeName"
+
+{-| -}
+attributeType : String -> Attribute msg
+attributeType = attribute "attributeType"
+
+{-| -}
+begin : String -> Attribute msg
+begin = attribute "begin"
+
+{-| -}
+end : String -> Attribute msg
+end = attribute "end"
+
+{-| -}
+dur : String -> Attribute msg
+dur = attribute "dur"
+
+{-| -}
+from : String -> Attribute msg
+from = attribute "from"
+
+{-| -}
+to : String -> Attribute msg
+to = attribute "to"
+
+{-| -}
+repeatCount : String -> Attribute msg
+repeatCount = attribute "repeatCount"

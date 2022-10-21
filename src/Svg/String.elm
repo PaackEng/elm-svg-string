@@ -2,6 +2,8 @@ module Svg.String exposing
     ( toHtml, toString
     , Svg, Html, Attribute, text, node, map
     , circle, defs, feColorMatrix, feGaussianBlur, feOffset, filter, g, rect, svg, text_, tspan, use
+    , ellipse, line, polygon, polyline, path, a
+    , animate, animateTransform, animateColor
     )
 
 {-| This file is organized roughly in order of popularity. The tags which you'd
@@ -185,9 +187,45 @@ circle =
 
 
 {-| -}
+ellipse : List (Attribute msg) -> List (Svg msg) -> Svg msg
+ellipse =
+    node "ellipse"
+
+
+{-| -}
 rect : List (Attribute msg) -> List (Svg msg) -> Svg msg
 rect =
     node "rect"
+
+
+{-| -}
+line : List (Attribute msg) -> List (Svg msg) -> Svg msg
+line =
+    node "line"
+
+
+{-| -}
+polygon : List (Attribute msg) -> List (Svg msg) -> Svg msg
+polygon =
+    node "polygon"
+
+
+{-| -}
+polyline : List (Attribute msg) -> List (Svg msg) -> Svg msg
+polyline =
+    node "polyline"
+
+
+{-| -}
+path : List (Attribute msg) -> List (Svg msg) -> Svg msg
+path =
+    node "path"
+
+
+{-| -}
+a : List (Attribute msg) -> List (Svg msg) -> Svg msg
+a =
+    node "a"
 
 
 {-| -}
@@ -212,6 +250,19 @@ tspan =
     node "tspan"
 
 
+-- Animation elements
+
+{-| -}
+animate : List (Attribute msg) -> List (Svg msg) -> Svg msg
+animate = node "animate"
+
+{-| -}
+animateTransform : List (Attribute msg) -> List (Svg msg) -> Svg msg
+animateTransform = node "animateTransform"
+
+{-| -}
+animateColor : List (Attribute msg) -> List (Svg msg) -> Svg msg
+animateColor = node "animateColor"
 
 -- Uncategorized elements
 
