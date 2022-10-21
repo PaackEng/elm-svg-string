@@ -11,7 +11,6 @@ module Svg.Types exposing
     , buildProp
     , closingTag
     , escape
-    , hyphenate
     , indent
     , join
     , map
@@ -246,7 +245,7 @@ tag tagName attributes =
 
 buildProp : String -> String -> String
 buildProp key value =
-    hyphenate key ++ "='" ++ escape value ++ "'"
+    key ++ "='" ++ escape value ++ "'"
 
 
 attributeToString : Attribute msg -> Maybe String
@@ -268,19 +267,6 @@ escape =
         (\char acc ->
             if char == '\'' then
                 acc ++ "&apos;"
-
-            else
-                acc ++ String.fromChar char
-        )
-        ""
-
-
-hyphenate : String -> String
-hyphenate =
-    String.foldl
-        (\char acc ->
-            if Char.isUpper char then
-                acc ++ "-" ++ String.fromChar (Char.toLower char)
 
             else
                 acc ++ String.fromChar char
