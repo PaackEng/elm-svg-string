@@ -3,6 +3,7 @@ module Svg.String exposing
     , Svg, Html, Attribute, text, node, map
     , circle, defs, feColorMatrix, feGaussianBlur, feOffset, filter, g, rect, svg, text_, tspan, use
     , ellipse, line, polygon, polyline, path, a
+    , animate, animateTransform, animateColor
     )
 
 {-| This file is organized roughly in order of popularity. The tags which you'd

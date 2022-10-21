@@ -3,7 +3,8 @@ module Svg.String.Attributes exposing
     , fontWeight, height, id, in_, map, r, result, rx, ry, stdDeviation, stroke, strokeWidth, style, transform
     , type_, values, viewBox, width, x, xlinkHref, y
     , class, points, d, strokeDasharray, cursor, preserveAspectRatio
-    , x1, x2, y1, y2
+    , x1, x2, y1, y2, shapeRendering, visibility, version, xmlns
+    , attributeName, attributeType, begin, end, dur, from, to, repeatCount
     )
 
 {-| Helper functions for SVG attributes.
