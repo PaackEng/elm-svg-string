@@ -73,5 +73,5 @@ suite =
                     [ Svg.rect [ Attr.style "fill: red", Attr.style "stroke: blue" ] []
                     ]
                     |> Svg.toString 0
-                    |> Expect.equal "<svg height='68px' version='1.1' view-box='0 0 48 68'><rect style='fill: red' style='stroke: blue'></rect></svg>"
+                    |> Expect.equal "<svg height='68px' version='1.1' viewBox='0 0 48 68'><rect style='fill: red' style='stroke: blue'></rect></svg>"
         ]
